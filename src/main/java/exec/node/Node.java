@@ -53,6 +53,9 @@ public class Node extends JButton implements ActionListener {
 	}
 
 	public void setAsOpen() {
+		if (!this.start && !this.goal) {
+			this.setBackground(new Color(217, 20, 204));
+		}
 		this.open = true;
 	}
 

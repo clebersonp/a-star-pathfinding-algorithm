@@ -247,12 +247,44 @@ public class DemoPanel extends JPanel {
 
 		// Backtrack and draw the best path
 		Node current = this.goalNode;
+		int count = 0;
 		while (!current.isStart()) {
-			current = current.getParentNode();
+			Node parentNode = current.getParentNode();
+			if (!current.isGoal()) {
+				String arrowAndTextFormat = "<html>%s<br>%s</html>";
+				final String arrowUp = "&uarr;";
+				final String arrowRight = "&rarr;";
+				final String arrowDown = "&darr;";
+				final String arrowLeft = "&larr;";
+				int row = parentNode.getRow() - current.getRow();
+				int col = parentNode.getCol() - current.getCol();
+
+				if (row != 0) {
+					if (row > 0) {
+						current.setText(String.format(arrowAndTextFormat, arrowUp, current.getText()));
+					} else {
+						current.setText(String.format(arrowAndTextFormat, arrowDown, current.getText()));
+					}
+				}
+
+				if (col != 0) {
+					if (col > 0) {
+						current.setText(String.format(arrowAndTextFormat, arrowLeft, current.getText()));
+					} else {
+						current.setText(String.format(arrowAndTextFormat, arrowRight, current.getText()));
+					}
+				}
+			}
+
+			current = parentNode;
 			if (!current.isStart()) {
+				count++;
 				current.setAsPath();
 			}
 		}
+
+		String newText = String.format("<html>%s<br>P:%s</html>", this.goalNode.getText(), count);
+		this.goalNode.setText(newText);
 	}
 
 }
